@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+    .card {
+      width: min(440px, 100%);
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 22px;
+    }
+    h2 {
+      margin: 0 0 14px;
+      color: #222;
+    }
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    input,
+    select {
+      border: 1px solid #cfcfcf;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 15px;
+    }
+    .actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    button,
+    .back {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+    button {
+      background: #d81b60;
+      color: #fff;
+    }
+    .back {
+      background: #f1f1f1;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Customer Information</h2>
+
+    <form id="order-form">
+      <div class="field">
+        <input type="text" id="fullName" placeholder="Full Name" required>
+      </div>
+
+      <div class="field">
+        <input type="text" id="firstName" placeholder="First Name" required>
+      </div>
+
+      <div class="field">
+        <input type="text" id="address" placeholder="Full Address" required>
+      </div>
+
+      <div class="field">
+        <input type="text" id="country" placeholder="Country" required>
+      </div>
+
+      <div class="field">
+        <input type="text" id="city" placeholder="City" required>
+      </div>
+
+      <div class="field">
+        <input type="text" id="phone" placeholder="Phone Number" required>
+      </div>
+
+      <div class="field">
+        <input type="text" id="postalCode" placeholder="Postal Code" required>
+      </div>
+
+      <div class="field">
+        <select id="color" required>
+          <option value="" selected disabled>Select Color</option>
+          <option value="orange">orange</option>
+          <option value="pink">pink</option>
+          <option value="blue">blue</option>
+          <option value="purple">purple</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <input type="number" id="quantity" placeholder="Quantity" min="1" value="1" required>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Confirm</button>
+        <a class="back" href="index.html">Back</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwWZR9c2C6SRs9kIfM5gR3Cnrp51malv67WFXl5XQ9VxufN7IryKRU52EGISNDSwrqz/exec";
+
+    async function sendData(event) {
+      event.preventDefault();
+
+      const data = {
+        fullName: document.getElementById("fullName").value,
+        firstName: document.getElementById("firstName").value,
+        address: document.getElementById("address").value,
+        country: document.getElementById("country").value,
+        city: document.getElementById("city").value,
+        phone: document.getElementById("phone").value,
+        postalCode: document.getElementById("postalCode").value,
+        color: document.getElementById("color").value,
+        quantity: document.getElementById("quantity").value
+      };
+
+      try {
+        await fetch(SHEETS_WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+      } catch (error) {
+        console.error("Error submitting order", error);
+      }
+
+      const query = new URLSearchParams(data).toString();
+      window.location.href = `product-checkout.html?${query}`;
+    }
+
+    document.getElementById("order-form").addEventListener("submit", sendData);
+  </script>
+
+</body>
+</html>

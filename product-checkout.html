@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Checkout</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 350px;
+      width: 100%;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .summary {
+      margin: 15px 0 5px;
+      color: #444;
+      font-size: 16px;
+    }
+    .total {
+      margin: 10px 0 18px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Buy Product</h1>
+  <div class="summary" id="quantity-summary">Quantity: 1</div>
+  <div class="total" id="total">Total: $19.99</div>
+  <div id="paypal-button-container"></div>
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=ATBBVYJdCI_S6b23n3QzClhr7-Kv3FwFF1gLrOqPk7zJk002V525AGkmVKY_9pWGLsNXiR1l7GgS3pm2&currency=USD"></script>
+<script>
+const pricePerUnit = 19.99;
+const params = new URLSearchParams(window.location.search);
+const quantity = Math.max(1, parseInt(params.get('quantity') || '1', 10) || 1);
+const total = (quantity * pricePerUnit).toFixed(2);
+
+document.getElementById('quantity-summary').textContent = `Quantity: ${quantity}`;
+document.getElementById('total').textContent = `Total: $${total}`;
+
+paypal.Buttons({
+  createOrder: function(data, actions) {
+    return actions.order.create({
+      purchase_units: [{
+        amount: {
+          value: total
+        },
+        description: `Product Order x${quantity}`
+      }]
+    });
+  },
+
+  onApprove: function(data, actions) {
+    return actions.order.capture().then(function(details) {
+      alert('Payment successful! Thank you ' + details.payer.name.given_name);
+    });
+  }
+}).render('#paypal-button-container');
+</script>
+
+</body>
+</html>
