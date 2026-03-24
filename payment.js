@@ -1,5 +1,4 @@
 const params = new URLSearchParams(window.location.search);
-
 const orderData = {
   firstName: params.get("firstName") || "",
   fullName: params.get("fullName") || "",
