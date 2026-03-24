@@ -12,7 +12,7 @@ const orderData = {
   quantity: params.get("quantity") || ""
 };
 
-const unitPrice = 19.99;
+const unitPrice = 29.99;
 const quantity = Math.max(1, Number.parseInt(orderData.quantity || "1", 10) || 1);
 const total = unitPrice * quantity;
 
