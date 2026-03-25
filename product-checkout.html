@@ -51,7 +51,7 @@
 
 <script src="https://www.paypal.com/sdk/js?client-id=ATBBVYJdCI_S6b23n3QzClhr7-Kv3FwFF1gLrOqPk7zJk002V525AGkmVKY_9pWGLsNXiR1l7GgS3pm2&currency=USD"></script>
 <script>
-const pricePerUnit = 19.99;
+const pricePerUnit = 29.99;
 const params = new URLSearchParams(window.location.search);
 const quantity = Math.max(1, parseInt(params.get('quantity') || '1', 10) || 1);
 const total = (quantity * pricePerUnit).toFixed(2);
